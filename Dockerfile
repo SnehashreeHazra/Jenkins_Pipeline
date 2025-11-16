@@ -1,6 +1,14 @@
-FROM ubuntu
-RUN apt-get update && apt-get install -y tzdata
-RUN apt-get -y install apache2
-ADD index.html /var/www/html
-ENTRYPOINT ["apachectl", "-D", "FOREGROUND"]
-ENV name dheerajtechinsight
+# Use the official Nginx image as the base
+FROM nginx:alpine
+
+# Remove default Nginx homepage
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy your custom index.html to the Nginx html directory
+COPY index.html /usr/share/nginx/html/
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
